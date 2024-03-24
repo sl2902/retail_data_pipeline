@@ -1,0 +1,4 @@
+version: 2
+
+models:
+  - name: mv_retail_transactions

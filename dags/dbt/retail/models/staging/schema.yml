@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: staging
+    database: "{{ env_var('GCP_PROJECT_ID') }}"
+     # For postgres:
+      #database: production
+    schema: retail_2
+
+    tables:
+      - name: transactions
+      - name: product
+      - name: store
+
+models:
+    - name: transactions
+    - name: product
+    - name: store
