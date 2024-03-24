@@ -72,7 +72,6 @@ Schema for inventory
 |store_id       | STRING  |Store identifer                           |
 
 
-
 ## High level architecture
 ![High level architecture](assets/high_level_architecture.png)
 
@@ -82,5 +81,47 @@ Schema for inventory
 ## Streamlit demo: US retail dashboard
 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://us-retail.streamlit.app/)
 
-
 The data used for this demo is artifically generated using Python scripts
+
+## Steps to reproduce the project
+1. Prerequisites
+<details>
+<summary>Google Cloud Platform Account</summary>
+
+Note - If you have already done these steps then it is not required.
+
+- Sign up for a free account [here](https://cloud.google.com/free/), and enable billing.
+- Create your project
+- Create a service account under IAM & Admin
+- Grant the following roles - Storage Admin + Storage Object Admin + BigQuery Admin
+- Click Add keys, and then crete new key. Download the JSON file
+
+</details>
+
+<details>
+<summary>Google Cloud SDK - Optional</summary>
+
+Installation instruction [here](https://cloud.google.com/sdk/docs/install-sdk).
+
+</details>
+
+Enable Google authentication - Optional
+```shell
+export GOOGLE_APPLICATION_CREDENTIALS=<path/to/your/service-account-authkeys>.json
+gcloud auth activate-service-account --key-file $GOOGLE_APPLICATION_CREDENTIALS
+gcloud auth application-default login
+```
+
+<detials>
+<summary>Install Docker for your OS</summary>
+
+Installation instructions[here](https://docs.docker.com/engine/install/)
+
+<details>
+<summary>Terraform</summary>
+
+You can view the [installation instructions for Terraform here](https://developer.hashicorp.com/terraform/downloads?ajs_aid=f70c2019-1bdc-45f4-85aa-cdd585d465b4&product_intent=terraform)
+
+</details>
+
+
