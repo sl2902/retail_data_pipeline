@@ -34,6 +34,45 @@ The following technologies have been used
 - [Pipenv](https://pipenv.pypa.io/en/latest/)
 - [Streamlit](https://streamlit.io/)
 
+## Data Dictionary
+Schema for product
+|Field name    |Type     |Description                               | 
+|--------------|---------|------------------------------------------|
+|product_id    | STRING  |Unique identifier                         |
+|name          | STRING  |Product name                              |
+|category      | STRING  |Product classification                    |
+|base_price    | FLOAT   |Unit price                                |
+|supplier_id   | STRING  |Unique supplier identifer                 |
+
+Schema for store
+|Field name    |Type     |Description                               | 
+|--------------|---------|------------------------------------------|
+|store_id      | STRING  |Unique identifier                         |
+|location      | STRING  |Store location                            |
+|size          | INT     |Store size                                |
+|manager       | STRING  |Name of manager                           |
+
+Schema for transaction
+|Field name    |Type     |Description                               | 
+|--------------|---------|------------------------------------------|
+|transaction_id| STRING  |Unique identifier                         |
+|product_id    | STRING  |Product identifier                        |
+|timestamp     | STRING  |Time of transaction                       |
+|quantity      | INT     |Number of units                           |
+|unit_price    | FLOAT   |Price of product                          |
+|store_id      | STRING  |Store identifer                           |
+
+Schema for inventory
+|Field name     |Type     |Description                               | 
+|---------------|---------|------------------------------------------|
+|inventory_id   | STRING  |Unique identifier                         |
+|product_id     | STRING  |Product identifier                        |
+|timestamp      | STRING  |Time of transaction                       |
+|quantity_change| INT     |Change in product quantity                |
+|store_id       | STRING  |Store identifer                           |
+
+
+
 ## High level architecture
 ![High level architecture](assets/high_level_architecture.png)
 
