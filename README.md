@@ -243,5 +243,9 @@ make dag_chk_status_publish_stream_to_bq_sec
 make docker_clean
 ```
 
+## References
+[1] [Pub/Sub Lite Spark Connector](https://github.com/googleapis/java-pubsublite-spark)
+[2] [Airflow Docker](https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html)
+[3] [dbt Materialized View](https://docs.getdbt.com/docs/build/materializations)
 
 
