@@ -126,12 +126,12 @@ You can view the [installation instructions for Terraform here](https://develope
 
 </details>
 
-**2.**Clone the repository:
+**2.** Clone the repository:
 ```shell
 git clone https://github.com/sl2902/retail_data_pipeline.git
 ```
 
-**3.**Change the working directory:
+**3.** Change the working directory:
 ```shell
 cd retail_data_pipeline/
 ```
