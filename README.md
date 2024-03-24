@@ -30,6 +30,7 @@ The following technologies have been used
 - [Apache Spark](https://spark.apache.org/docs/latest/api/python/user_guide)
 - [dbt](https://github.com/dbt-labs/dbt-core)
 - [Docker](https://docs.docker.com/get-docker/)
+- [Make](https://makefiletutorial.com/)
 - [Pipenv](https://pipenv.pypa.io/en/latest/)
 - [Streamlit](https://streamlit.io/)
 
