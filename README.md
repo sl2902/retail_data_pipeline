@@ -117,6 +117,7 @@ gcloud auth application-default login
 <summary>Install Docker for your OS</summary>
 
 Installation instructions[here](https://docs.docker.com/engine/install/)
+</details>
 
 <details>
 <summary>Terraform</summary>
