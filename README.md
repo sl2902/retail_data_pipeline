@@ -3,6 +3,7 @@
 ![CloudStorage](https://img.shields.io/badge/GoogleCloudStorage-3772FF?style=flat&logo=googlecloudstorage&logoColor=white&labelColor=3772FF)
 ![BigQuery](https://img.shields.io/badge/BigQuery-3772FF?style=flat&logo=googlebigquery&logoColor=white&labelColor=3772FF)
 ![BigQuery](https://img.shields.io/badge/Pubsublite-3772FF?style=flat&logo=googlepubsub&logoColor=white&labelColor=3772FF)
+![Dataproc](https://img.shields.io/badge/Dataproc-3772FF?style=flat&logo=googledataproc&logoColor=white&labelColor=3772FF)
 ![dbt](https://img.shields.io/badge/dbt-1.7-262A38?style=flat&logo=dbt&logoColor=FF6849&labelColor=262A38)
 ![Docker](https://img.shields.io/badge/Docker-329DEE?style=flat&logo=docker&logoColor=white&labelColor=329DEE)
 ![Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)
@@ -112,7 +113,7 @@ gcloud auth activate-service-account --key-file $GOOGLE_APPLICATION_CREDENTIALS
 gcloud auth application-default login
 ```
 
-<detials>
+<details>
 <summary>Install Docker for your OS</summary>
 
 Installation instructions[here](https://docs.docker.com/engine/install/)
