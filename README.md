@@ -85,7 +85,7 @@ Schema for inventory
 The data used for this demo is artifically generated using Python scripts
 
 ## Steps to reproduce the project
-1. Prerequisites
+**1.** Prerequisites:
 <details>
 <summary>Google Cloud Platform Account</summary>
 
@@ -124,5 +124,123 @@ Installation instructions[here](https://docs.docker.com/engine/install/)
 You can view the [installation instructions for Terraform here](https://developer.hashicorp.com/terraform/downloads?ajs_aid=f70c2019-1bdc-45f4-85aa-cdd585d465b4&product_intent=terraform)
 
 </details>
+
+**2.**Clone the repository:
+```shell
+git clone https://github.com/sl2902/retail_data_pipeline.git
+```
+
+**3.**Change the working directory:
+```shell
+cd retail_data_pipeline/
+```
+
+**4.** Rename the env.template file to `.env`:
+```shell
+mv env.template .env
+```
+
+4.1 Fill in the blanks to the following variables in the `.env` file and save it:
+```shell
+project_id=
+SERVICE_ACCOUNT_FILENAME=
+HOST_GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/${SERVICE_ACCOUNT_FILENAME}
+```
+
+**5.** Build and enable the virtual environment:
+```shell
+make setup
+```
+
+**6.** Run docker compose:
+```shell
+make docker_build
+```
+
+6.1 Launch Airflow UI. user - `airflow`. password - `airflow`:
+```shell
+http://localhost:8080
+```
+
+6.2 Run sanity check to see whether the dags are available; there should be 5 dags:
+```shell
+make dag_list
+```
+
+6.3 Create service account in Airflow configuration:
+```shell
+make add_gcp_service_account_airflow
+```
+
+6.4 Load the configuration files:
+```shell
+make dag_run_upload_config_files_to_gcs
+```
+
+6.4.1 Check the status of job either on the CLI or via the Airflow UI:
+```shell
+make dag_chk_status_upload_config_files_to_gcs
+```
+
+6.5 Generate and load dimensional data to BQ:
+```shell
+make dag_run_load_mock_dim_data_bq
+```
+
+6.5.1 Check the status of job either on the CLI or via the Airflow UI:
+```shell
+make dag_chk_status_load_mock_dim_data_bq
+```
+
+6.6 Setup the pub/sub lite infra
+```shell
+make dag_run_setup_pubsublite_infra
+```
+
+6.6.1 Check the status of job either on the CLI or via the Airflow UI:
+```shell
+make dag_chk_status_setup_pubsublite_infra
+```
+
+6.7 Generate transaction and inventory history for 3 months and stream the data
+```shell
+make dag_run_publish_stream_to_bq
+```
+
+6.7.1 Check the status of job either on the CLI or via the Airflow UI:
+```shell
+make dag_chk_status_publish_stream_to_bq
+```
+
+6.8 Transform the data using dbt
+```shell
+make dag_run_build_dbt_model
+```
+
+6.8.1 Check the status of job either on the CLI or via the Airflow UI:
+```shell
+make dag_chk_status_build_dbt_model
+```
+
+6.9 Run the streamlit dashboard
+```shell
+make run_streamlit
+```
+
+6.10 Simulate generating transactions and inventories in real-time and stream the data
+```shell
+make dag_run_publish_stream_to_bq_sec
+```
+
+6.10.1 Check the status of job either on the CLI or via the Airflow UI:
+```shell
+make dag_chk_status_publish_stream_to_bq_sec
+```
+
+6.11 Clean the environment
+```shell
+make docker_clean
+```
+
 
 
