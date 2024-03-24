@@ -244,8 +244,8 @@ make docker_clean
 ```
 
 ## References
-[1] [Pub/Sub Lite Spark Connector](https://github.com/googleapis/java-pubsublite-spark)
-[2] [Airflow Docker](https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html)
-[3] [dbt Materialized View](https://docs.getdbt.com/docs/build/materializations)
+[1] [Pub/Sub Lite Spark Connector](https://github.com/googleapis/java-pubsublite-spark)<br>
+[2] [Airflow Docker](https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html)<br>
+[3] [dbt Materialized View](https://docs.getdbt.com/docs/build/materializations)<br>
 
 
