@@ -1,0 +1,27 @@
+# mac
+.DS_Store
+
+# terraform
+*.tfstate
+*.tfstate.*
+**.terraform
+**.terraform.lock.*
+
+#gcp
+**google_credentials.json
+**logs/
+**.env
+**/.env
+**/.streamlit
+
+**__pycache__/
+.history
+input_data/*
+
+#postgres
+pg_db/*
+
+.ipynb_checkpoints/
+
+#mage
+**/mage_data
