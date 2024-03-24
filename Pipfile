@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+streamlit = "*"
+pandas = "*"
+altair = "*"
+plotly = "*"
+google-cloud-bigquery = "*"
+db-dtypes = "*"
+google-cloud = "==0.34.0"
+google-cloud-storage = "*"
+python-dotenv = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"
