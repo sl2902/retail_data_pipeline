@@ -165,19 +165,24 @@ set -o allexport && source .env && set +o allexport
 cd terraform
 ```
 
-7.1 Initialize terraform
+7.1 Initialize terraform:
 ```shell
 terraform init
 ```
 
-7.2 Plan terraform
+7.2 Plan terraform:
 ```shell
 terraform plan
 ```
 
-7.3 Apply terraform
+7.3 Apply terraform:
 ```shell
 terraform apply
+```
+
+7.4 Return to project root folder:
+```shell
+cd ../
 ```
 
 **8.** Start Docker desktop. Run docker compose:
