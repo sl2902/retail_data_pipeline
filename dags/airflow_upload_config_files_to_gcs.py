@@ -33,7 +33,7 @@ config_file_path = f'{base_path}/config_data'
 pyspark_file_path = f'{base_path}/pyspark_scripts'
 jar_file_path = f'{base_path}/jars'
 pip_file_path = f'{base_path}/python/pip-install.sh'
-dst_pip_file_path = f"{os.getenv('python_data_subfolfer')}/pip-install.sh"
+dst_pip_file_path = f"{os.getenv('python_data_subfolder')}/pip-install.sh"
 
 
 class UploadLocalFolderToGCS(BaseOperator):
