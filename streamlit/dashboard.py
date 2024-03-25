@@ -15,6 +15,7 @@ project_root = os.path.abspath(os.path.join(current_dir, '..'))
 sys.path.append(project_root)
 from dags.config_data.gcp_config_parameters import *
 
+# this would require us to push the .env file to the repo
 load_dotenv(f"{project_root}/.env")
 
 page_title = "US Retail dashboard"
@@ -142,7 +143,7 @@ mv_txn_prod = prepare_txn_query("""
                      `{project_number}.{bq_dataset}.{mv}`
                   ORDER BY
                      timestamp, transaction_id
-                  """.format(project_number=credentials.project_id, bq_dataset=os.getenv('DBT_DATASET'), mv="mv_retail_transactions")
+                  """.format(project_number=credentials.project_id, bq_dataset=credentials.DBT_DATASET, mv="mv_retail_transactions")
 )
 
 # prod_df = pd.DataFrame(products)
