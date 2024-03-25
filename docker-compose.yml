@@ -57,8 +57,10 @@ x-airflow-common:
     GCP_REGION: ${region}
     GCP_LOCATION: ${location}
     GCP_ZONE: ${zone_id}
+    GCP_DATASET: ${dataset}
     PYTHONPATH: ${PYTHONPATH}
     DBT_CWD: ${DBT_CWD}
+    DBT_DATASET: ${DBT_DATASET}
     AIRFLOW__CORE__EXECUTOR: CeleryExecutor
     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
     AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
