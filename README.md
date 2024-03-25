@@ -156,7 +156,7 @@ HOST_GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/${SERVICE_ACCOUNT_FILENAME}
 make setup
 ```
 
-**6.** Load environment variables in the project directory:
+**6.** Load environment variables into the project directory:
 ```shell
 source .env
 ```
