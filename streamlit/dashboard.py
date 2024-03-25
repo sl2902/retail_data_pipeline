@@ -6,6 +6,7 @@ from google.oauth2 import service_account
 from google.cloud import bigquery
 import os, sys
 import json
+import toml
 from dotenv import load_dotenv
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -60,6 +61,16 @@ except:
     credentials = service_account.Credentials.from_service_account_info(
     json.load(open(os.getenv('HOST_GOOGLE_APPLICATION_CREDENTIALS')))
 )
+
+try:
+    # required when streamlit is deployed to cloud
+    # DBT_DATASET is defined in the .env file
+    # which would have to be pushed to the repo
+    with open(f"{project_root}/.streamlit/secrets.toml", "r") as f:
+        data = toml.load(f)
+        bq_dataset = data["dbt_service"]["DBT_DATASET"]
+except:
+    bq_dataset = os.getenv('DBT_DATASET')
 
 
 client = bigquery.Client(credentials=credentials)
@@ -143,7 +154,7 @@ mv_txn_prod = prepare_txn_query("""
                      `{project_number}.{bq_dataset}.{mv}`
                   ORDER BY
                      timestamp, transaction_id
-                  """.format(project_number=credentials.project_id, bq_dataset=credentials.DBT_DATASET, mv="mv_retail_transactions")
+                  """.format(project_number=credentials.project_id, bq_dataset=bq_dataset, mv="mv_retail_transactions")
 )
 
 # prod_df = pd.DataFrame(products)
