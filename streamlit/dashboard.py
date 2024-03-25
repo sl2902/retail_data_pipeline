@@ -142,7 +142,7 @@ mv_txn_prod = prepare_txn_query("""
                      `{project_number}.{bq_dataset}.{mv}`
                   ORDER BY
                      timestamp, transaction_id
-                  """.format(project_number=credentials.project_id, bq_dataset=DBT_DATASET, mv="mv_retail_transactions")
+                  """.format(project_number=credentials.project_id, bq_dataset=os.getenv('DBT_DATASET'), mv="mv_retail_transactions")
 )
 
 # prod_df = pd.DataFrame(products)
