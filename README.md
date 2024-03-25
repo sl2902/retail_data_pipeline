@@ -158,7 +158,7 @@ make setup
 
 **6.** Load environment variables in the project directory:
 ```shell
-set -o allexport && source .env && set +o allexport
+source .env
 ```
 
 **7.** Create GCP Storage bucket using Terraform:
