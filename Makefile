@@ -88,7 +88,7 @@ docker_clean: ## Clean Docker environment
 	# @docker container prune
 	# @docker rmi -f image $(docker image ls -q)
 	@docker-compose down -v
-	@docker-compose down --rmi=all
+	@docker compose down --volumes --rmi all
 
 help: ## Help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(filter-out .env, $(MAKEFILE_LIST)) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-45s\033[0m %s\n", $$1, $$2}'
