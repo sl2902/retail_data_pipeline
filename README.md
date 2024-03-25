@@ -17,6 +17,7 @@ There are 4 tables in total:
 1) Two dimensional tables which contains `product` and `store` data
 2) Two fact tables which contain `inventories` and `transactions` data.
 In order to create a dashboard, some historical data is generated starting Jan 2024 - March 2024. The Airflow job can be run every hour or so to simulate the generation of transactions and inventories every few seconds.
+The number of `products` and `stores` is config driven and is set to 2_000 and 1_000 records respectively.
 
 ## Problem Description
 The goal of the project is to build an end to end streaming data pipeline that will produce data, between 5 and 10 seconds, for a fictitious US E-commerce retail giant. The dimensional data and fact data are store in Google Cloud Storage. Pubsublite is used to produce and consume streaming `transactions` and `inventories`, which is processed using Apache Spark; the final results are stored in Bigquery, and they are transformed using dbt; the analysis is displayed on Streamlit.
@@ -81,7 +82,7 @@ Schema for `inventory`
 ![End to end dataflow](assets/end_to_end_dataflow.png)
 
 ## Streamlit demo: US retail dashboard
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://us-retail.streamlit.app/)
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://us-retail-dashboard.streamlit.app/)
 
 The data used for this demo is artifically generated using Python scripts
 
