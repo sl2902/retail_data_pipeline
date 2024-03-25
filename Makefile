@@ -2,7 +2,7 @@ SHELL:=/bin/bash
 include .env
 
 setup: ## Setup the development environment
-	@pipenv install --dev; pipenv run pre-commit install; pipenv shell
+	@pipenv install --dev; pipenv run pre-commit install; pipenv shell; pipenv sync
 
 docker_build: ## Docker build and run the Airflow pipeline
 	@docker-compose up --build -d
