@@ -5,7 +5,7 @@ sources:
     database: "{{ env_var('GCP_PROJECT_ID') }}"
      # For postgres:
       #database: production
-    schema: retail_2
+    schema: "{{ env_var('GCP_DATASET') }}"
 
     tables:
       - name: transactions
