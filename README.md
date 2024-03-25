@@ -15,18 +15,19 @@ This project was created as part of the finale for the DataTalksClub - Data Engi
 is completely artifical; they were generated using Python scripts.
 There are 4 tables in total: 
 1) Two dimensional tables which contains `product` and `store` data
-2) Two fact tables which contain `inventories` and `transactions` data
+2) Two fact tables which contain `inventories` and `transactions` data.
 In order to create a dashboard, some historical data is generated starting Jan 2024 - March 2024. The Airflow job can be run every hour or so to simulate the generation of transactions and inventories every few seconds.
 
 ## Problem Description
-The goal of the project is to build an end to end streaming data pipeline that will produce data, aggregated to one second interval, of a fictitious US E-commerce retail giant. The dimensional data and fact data are store in Google Cloud Storage. Pubsublite is used to produce and consume streaming transactions and inventories, which is processed using Apache Spark; the final results are stored in Bigquery and these are transformed using dbt; the analysis is displayed on Streamlit.
+The goal of the project is to build an end to end streaming data pipeline that will produce data, between 5 and 10 seconds, for a fictitious US E-commerce retail giant. The dimensional data and fact data are store in Google Cloud Storage. Pubsublite is used to produce and consume streaming `transactions` and `inventories`, which is processed using Apache Spark; the final results are stored in Bigquery, and they are transformed using dbt; the analysis is displayed on Streamlit.
 
 ## Technology Stack 
 The following technologies have been used
-- [Google Cloud Storage (GCS)](https://cloud.google.com/storage?hl=en)
 - [Google BigQuery](https://cloud.google.com/bigquery?hl=en)
+- [Google Cloud Storage (GCS)](https://cloud.google.com/storage?hl=en)
+- [Google Dataproc](https://cloud.google.com/dataproc?hl=en)
 - [Google Pubsublite](https://cloud.google.com/pubsub/lite/docs)
-- Terraform<br>
+- [Terraform](https://www.terraform.io/)
 - [Airflow](https://airflow.apache.org/docs/apache-airflow/stable/start.html)
 - [Apache Spark](https://spark.apache.org/docs/latest/api/python/user_guide)
 - [dbt](https://github.com/dbt-labs/dbt-core)
@@ -36,7 +37,7 @@ The following technologies have been used
 - [Streamlit](https://streamlit.io/)
 
 ## Data Dictionary
-Schema for product
+Schema for `product`
 |Field name    |Type     |Description                               | 
 |--------------|---------|------------------------------------------|
 |product_id    | STRING  |Unique identifier                         |
@@ -45,7 +46,7 @@ Schema for product
 |base_price    | FLOAT   |Unit price                                |
 |supplier_id   | STRING  |Unique supplier identifer                 |
 
-Schema for store
+Schema for `store`
 |Field name    |Type     |Description                               | 
 |--------------|---------|------------------------------------------|
 |store_id      | STRING  |Unique identifier                         |
@@ -53,7 +54,7 @@ Schema for store
 |size          | INT     |Store size                                |
 |manager       | STRING  |Name of manager                           |
 
-Schema for transaction
+Schema for `transaction`
 |Field name    |Type     |Description                               | 
 |--------------|---------|------------------------------------------|
 |transaction_id| STRING  |Unique identifier                         |
@@ -63,7 +64,7 @@ Schema for transaction
 |unit_price    | FLOAT   |Price of product                          |
 |store_id      | STRING  |Store identifer                           |
 
-Schema for inventory
+Schema for `inventory`
 |Field name     |Type     |Description                               | 
 |---------------|---------|------------------------------------------|
 |inventory_id   | STRING  |Unique identifier                         |
@@ -94,8 +95,8 @@ Note - If you have already done these steps then it is not required.
 - Sign up for a free account [here](https://cloud.google.com/free/), and enable billing.
 - Create your project
 - Create a service account under IAM & Admin
-- Grant the following roles - Storage Admin + Storage Object Admin + BigQuery Admin
-- Click Add keys, and then crete new key. Download the JSON file
+- Grant the following roles - Owner + Storage Admin + Storage Object Admin + BigQuery Admin
+- Click Add keys, and then crete new key. Download the JSON file and store it in a suitable location locally
 
 </details>
 
@@ -141,9 +142,10 @@ cd retail_data_pipeline/
 mv env.template .env
 ```
 
-4.1 Fill in the blanks to the following variables in the `.env` file and save it:
+4.1 Fill in the blanks to the following environment variables in the `.env` file and save it:
 ```shell
 project_id=
+bucket_name=
 SERVICE_ACCOUNT_FILENAME=
 HOST_GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/${SERVICE_ACCOUNT_FILENAME}
 ```
@@ -153,92 +155,118 @@ HOST_GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/${SERVICE_ACCOUNT_FILENAME}
 make setup
 ```
 
-**6.** Run docker compose:
+**6.** Load environment variables in the project directory:
+```shell
+set -o allexport && source .env && set +o allexport
+```
+
+**7.** Create GCP Storage bucket using Terraform:
+```shell
+cd terraform
+```
+
+7.1 Initialize terraform
+```shell
+terraform init
+```
+
+7.2 Plan terraform
+```shell
+terraform plan
+```
+
+7.3 Apply terraform
+```shell
+terraform apply
+```
+
+**8.** Start Docker desktop. Run docker compose:
 ```shell
 make docker_build
 ```
 
-6.1 Launch Airflow UI. user - `airflow`. password - `airflow`:
+8.1 Launch Airflow UI. username - `airflow`. password - `airflow`. Note - it make take a few seconds to launch the page:
 ```shell
 http://localhost:8080
 ```
 
-6.2 Run sanity check to see whether the dags are available; there should be 5 dags:
+8.2 Run sanity check to see whether the dags are available; there should be 5 dags, which are paused:
 ```shell
 make dag_list
 ```
+Note - if you haven't provided the `SERVICE_ACCOUNT_FILENAME` and `project_id`, it will fail to add the connection
 
-6.3 Create service account in Airflow configuration:
+8.3 Create service account in Airflow connections:
 ```shell
 make add_gcp_service_account_airflow
 ```
 
-6.4 Load the configuration files:
+8.4 Load the configuration files:
 ```shell
 make dag_run_upload_config_files_to_gcs
 ```
 
-6.4.1 Check the status of job either on the CLI or via the Airflow UI:
+8.4.1 Check the status of job either on the CLI or via the Airflow UI:
 ```shell
 make dag_chk_status_upload_config_files_to_gcs
 ```
 
-6.5 Generate and load dimensional data to BQ:
+8.5 Generate and load dimensional data to BQ:
 ```shell
 make dag_run_load_mock_dim_data_bq
 ```
 
-6.5.1 Check the status of job either on the CLI or via the Airflow UI:
+8.5.1 Check the status of job either on the CLI or via the Airflow UI:
 ```shell
 make dag_chk_status_load_mock_dim_data_bq
 ```
 
-6.6 Setup the pub/sub lite infra
+8.6 Setup the pub/sub lite infra
 ```shell
 make dag_run_setup_pubsublite_infra
 ```
 
-6.6.1 Check the status of job either on the CLI or via the Airflow UI:
+8.6.1 Check the status of job either on the CLI or via the Airflow UI:
 ```shell
 make dag_chk_status_setup_pubsublite_infra
 ```
 
-6.7 Generate transaction and inventory history for 3 months and stream the data
+8.7 Generate transaction and inventory history for 3 months and stream the data
 ```shell
 make dag_run_publish_stream_to_bq
 ```
 
-6.7.1 Check the status of job either on the CLI or via the Airflow UI:
+8.7.1 Check the status of job either on the CLI or via the Airflow UI:
 ```shell
 make dag_chk_status_publish_stream_to_bq
 ```
 
-6.8 Transform the data using dbt
+8.8 Transform the data using dbt
 ```shell
 make dag_run_build_dbt_model
 ```
 
-6.8.1 Check the status of job either on the CLI or via the Airflow UI:
+8.8.1 Check the status of job either on the CLI or via the Airflow UI:
 ```shell
 make dag_chk_status_build_dbt_model
 ```
 
-6.9 Run the streamlit dashboard
+8.9 Run the streamlit dashboard
 ```shell
 make run_streamlit
 ```
 
-6.10 Simulate generating transactions and inventories in real-time and stream the data
+8.10 Simulate generating transactions and inventories in real-time and stream the data
 ```shell
 make dag_run_publish_stream_to_bq_sec
 ```
 
-6.10.1 Check the status of job either on the CLI or via the Airflow UI:
+8.10.1 Check the status of job either on the CLI or via the Airflow UI:
 ```shell
 make dag_chk_status_publish_stream_to_bq_sec
 ```
 
-6.11 Clean the environment
+8.11 Clean the environment
 ```shell
 make docker_clean
 ```
