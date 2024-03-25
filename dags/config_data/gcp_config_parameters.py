@@ -11,8 +11,8 @@ load_dotenv()
 PROJECT_ID = os.getenv('project_id')
 REGION = os.getenv('region')
 LOCATION = os.getenv('location')
-BUCKET_NAME = "mock-retail-data-2"
-DATASET = "retail_2"
-DBT_DATASET = "dbt_retail"
+BUCKET_NAME = os.getenv('bucket_name')
+DATASET = os.getenv('dataset')
+# DBT_DATASET = os.getenv('DBT_DATASET') # required by streamlit. otherwise we have to push .env file to the repo
 PRODUCT_TABLE = "product"
 STORE_TABLE = "store"
