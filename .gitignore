@@ -28,3 +28,4 @@ pg_db/*
 
 # dbt
 **/target
+**/dbt_packages
