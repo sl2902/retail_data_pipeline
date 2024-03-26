@@ -4,8 +4,6 @@ variable "gcp_service_list" {
   type = list(string)
   default = [
     "dataproc.googleapis.com",
-    "bigquery.googleapis.com",
-    "compute.googleapis.com",
     "pubsublite.googleapis.com"
   ]
 }
@@ -16,14 +14,27 @@ variable "gcp_service_list" {
 #   disable_dependent_services = true
 # }
 
-# resource "google_project_service" "cloudresourcemanager" {
-#   project = var.GCP_PROJECT_ID
-#   service =  "cloudresourcemanager.googleapis.com"
-#   disable_dependent_services = true
-# }
+resource "google_project_service" "cloudresourcemanager" {
+  project = var.GCP_PROJECT_ID
+  service =  "cloudresourcemanager.googleapis.com"
+  disable_dependent_services = true
+}
+
+resource "google_project_service" "bigquery" {
+  project = var.GCP_PROJECT_ID
+  service =  "bigquery.googleapis.com"
+  disable_dependent_services = true
+}
+
+resource "google_project_service" "compute" {
+  project = var.GCP_PROJECT_ID
+  service =  "compute.googleapis.com"
+  disable_dependent_services = true
+}
 
 resource "google_project_service" "gcp_services" {
   for_each = toset(var.gcp_service_list)
   project = var.GCP_PROJECT_ID
   service = each.key
+  disable_dependent_services=true
 }
