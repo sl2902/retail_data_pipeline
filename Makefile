@@ -86,7 +86,7 @@ run_streamlit: ## Start Streamlit dashboard
 docker_clean: ## Clean Docker environment
 	# @docker container stop $(docker container ls -q)
 	# @docker container prune
-	# @docker rmi -f image $(docker image ls -q)
+	@docker rmi -f image $(docker image ls -q)
 	@docker-compose down -v
 	@docker compose down --volumes --rmi all
 
