@@ -96,10 +96,9 @@ Note - If you have already done these steps then it is not required.
 - Sign up for a free account [here](https://cloud.google.com/free/), and enable billing.
 - Create your project
 - Create a service account under IAM & Admin
-- Grant the following roles - Owner + Storage Admin + Storage Object Admin
+- Grant the following roles - Owner + Storage Admin + Storage Object Admin + Service Usage Admin
 - Enable the following apis - 
     `serviceusage` [here](https://console.developers.google.com/apis/api/serviceusage.googleapis.com/)
-    `cloudresourcemanager` [here](https://console.developers.google.com/apis/api/cloudresourcemanager.googleapis.com/)
 - Click Add keys, and then crete new key. Download the JSON file and store it in a suitable location locally
 
 </details>
@@ -189,13 +188,14 @@ terraform plan
 terraform apply
 ```
 Enter "yes" when prompted for a value to the following "Do you want to perform these actions?"
+Note - On some occassions, the following api [cloudresourcemanager](https://console.developers.google.com/apis/api/cloudresourcemanager.googleapis.com/overview?project=556382348091). However, on checking the console, the API appears enabled. In such cases ignore the error. Otherwise, manually enable it via the console.
 
 8.4 Return to project root folder:
 ```shell
 cd ../
 ```
 
-9 Launch Airflow UI. username - `airflow`. password - `airflow`:
+**9.** Launch Airflow UI. username - `airflow`. password - `airflow`:
 ```shell
 http://localhost:8080
 ```
@@ -310,9 +310,24 @@ make run_streamlit
 make docker_clean
 ```
 
+**10.** Destroy terraform resources:
+```shell
+cd terraform && terraform destroy && cd ../
+```
+
+10.1 Remove the remaining dependent APIs either via the console or after installing gcloud sdk and initializing the project:
+```shell
+  gcloud services list --format="value(config.name)" \
+| xargs -I{} gcloud services disable --force {}
+```
+
 ## References
 [1] [Pub/Sub Lite Spark Connector](https://github.com/googleapis/java-pubsublite-spark)<br>
 [2] [Airflow Docker](https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html)<br>
 [3] [dbt Materialized View](https://docs.getdbt.com/docs/build/materializations)<br>
+[4] [Add GCP Credentials via Airfolw CLI](https://stackoverflow.com/questions/50040717/add-gcp-credentials-to-airflow-via-command-line)<br>
+[5] [Disable all GCP APIs via CLI](https://stackoverflow.com/questions/72806856/how-to-disable-all-enabled-apis-services)<br>
+[6] [Enable service account roles using Terraform](https://stackoverflow.com/questions/55737583/using-terraform-to-create-a-service-account-with-iam-roles)<br>
+[7] [Using Airflow decorators instead of Jinja](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/operators.html)<br>
 
 
