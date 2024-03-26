@@ -96,7 +96,10 @@ Note - If you have already done these steps then it is not required.
 - Sign up for a free account [here](https://cloud.google.com/free/), and enable billing.
 - Create your project
 - Create a service account under IAM & Admin
-- Grant the following roles - Owner + Storage Admin + Storage Object Admin + BigQuery Admin
+- Grant the following roles - Owner + Storage Admin + Storage Object Admin
+- Enable the following apis - 
+    `serviceusage` [here](https://console.developers.google.com/apis/api/serviceusage.googleapis.com/)
+    `cloudresourcemanager` [here](https://console.developers.google.com/apis/api/cloudresourcemanager.googleapis.com/)
 - Click Add keys, and then crete new key. Download the JSON file and store it in a suitable location locally
 
 </details>
@@ -122,7 +125,7 @@ Installation instructions[here](https://docs.docker.com/engine/install/)
 </details>
 
 <details>
-<summary>Terraform</summary>
+<summary>Install Terraform</summary>
 
 You can view the [installation instructions for Terraform here](https://developer.hashicorp.com/terraform/downloads?ajs_aid=f70c2019-1bdc-45f4-85aa-cdd585d465b4&product_intent=terraform)
 
@@ -213,7 +216,7 @@ make add_gcp_service_account_airflow
 make dag_run_upload_config_files_to_gcs
 ```
 
-9.3.1 Check the status of job either on the CLI or via the Airflow UI:
+9.3.1 Check the status of job either on the CLI or via the Airflow UI by clicking on the respective dag:
 ```shell
 make dag_chk_status_upload_config_files_to_gcs
 ```
@@ -223,7 +226,7 @@ make dag_chk_status_upload_config_files_to_gcs
 make dag_run_load_mock_dim_data_bq
 ```
 
-9.4.1 Check the status of job either on the CLI or via the Airflow UI:
+9.4.1 Check the status of job either on the CLI or via the Airflow UI by clicking on the respective dag:
 ```shell
 make dag_chk_status_load_mock_dim_data_bq
 ```
@@ -233,17 +236,17 @@ make dag_chk_status_load_mock_dim_data_bq
 make dag_run_setup_pubsublite_infra
 ```
 
-9.5.1 Check the status of job either on the CLI or via the Airflow UI:
+9.5.1 Check the status of job either on the CLI or via the Airflow UI by clicking on the respective dag:
 ```shell
 make dag_chk_status_setup_pubsublite_infra
 ```
 
-9.6 Generate transaction and inventory history for 3 months and stream the data
+9.6 Generate transaction and inventory history for 3 months and stream the data:
 ```shell
 make dag_run_publish_stream_to_bq
 ```
 
-9.6.1 Check the status of job either on the CLI or via the Airflow UI:
+9.6.1 Check the status of job either on the CLI or via the Airflow UI by clicking on the respective dag:
 ```shell
 make dag_chk_status_publish_stream_to_bq
 ```
@@ -253,7 +256,7 @@ make dag_chk_status_publish_stream_to_bq
 make dag_run_build_dbt_model
 ```
 
-9.7.1 Check the status of job either on the CLI or via the Airflow UI:
+9.7.1 Check the status of job either on the CLI or via the Airflow UI by clicking on the respective dag:
 ```shell
 make dag_chk_status_build_dbt_model
 ```
@@ -262,18 +265,37 @@ make dag_chk_status_build_dbt_model
 ```shell
 make run_streamlit
 ```
+Note - Because you may not have updated the secrets file required by Streamlit to connect to Bigquery, you may
+see a message on the dashboard, you can ignore it as the script will fall back on the service account file
+defined in the `.env` file. If you want to avoid the warning message, then you will need to create a `.streamlit`
+folder in the project directory and a corresponding `secrets.toml` with the following contents drawn from your
+gcp service account file
+```
+[gcp_service_account]
 
-9.9 Simulate generating transactions and inventories in real-time and stream the data
+type = "service_account"
+project_id = "PROJECT_ID"
+private_key_id = "KEY_ID"
+private_key = "-----BEGIN PRIVATE KEY-----\nPRIVATE_KEY\n-----END PRIVATE KEY-----"
+client_email = "SERVICE_ACCOUNT_EMAIL"
+client_id = "CLIENT_ID"
+auth_uri = "https://accounts.google.com/o/oauth2/auth"
+token_uri = "https://accounts.google.com/o/oauth2/token"
+auth_provider_x509_cert_url = "https://www.googleapis.com/oauth2/v1/certs"
+client_x509_cert_url = "https://www.googleapis.com/robot/v1/metadata/x509/SERVICE_ACCOUNT_EMAIL"
+```
+
+9.9 Simulate generating transactions and inventories in real-time and stream the data for 5 seconds:
 ```shell
 make dag_run_publish_stream_to_bq_sec
 ```
 
-9.9.1 Check the status of job either on the CLI or via the Airflow UI:
+9.9.1 Check the status of job either on the CLI or via the Airflow UI by clicking on the respective dag:
 ```shell
 make dag_chk_status_publish_stream_to_bq_sec
 ```
 
-9.10 Rerun the dbt job
+9.10 Rerun the dbt job:
 ```shell
 make dag_run_build_dbt_model
 ```
