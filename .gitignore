@@ -7,7 +7,7 @@
 **.terraform
 **.terraform.lock.*
 
-#gcp
+# gcp
 **google_credentials.json
 **logs/
 **.env
@@ -18,10 +18,13 @@
 .history
 input_data/*
 
-#postgres
+# postgres
 pg_db/*
 
 .ipynb_checkpoints/
 
-#mage
+# mage
 **/mage_data
+
+# dbt
+**/target
