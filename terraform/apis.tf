@@ -10,6 +10,18 @@ variable "gcp_service_list" {
   ]
 }
 
+# resource "google_project_service" "serviceusage" {
+#   project = var.GCP_PROJECT_ID
+#   service = "serviceusage.googleapis.com"
+#   disable_dependent_services = true
+# }
+
+# resource "google_project_service" "cloudresourcemanager" {
+#   project = var.GCP_PROJECT_ID
+#   service =  "cloudresourcemanager.googleapis.com"
+#   disable_dependent_services = true
+# }
+
 resource "google_project_service" "gcp_services" {
   for_each = toset(var.gcp_service_list)
   project = var.GCP_PROJECT_ID
