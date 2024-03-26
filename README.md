@@ -156,14 +156,14 @@ HOST_GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/${SERVICE_ACCOUNT_FILENAME}
 make setup
 ```
 
-**6.** Load environment variables into the project directory:
-```shell
-source .env
-```
-
-**7.** Start Docker desktop. Run docker compose:
+**6.** Start Docker desktop and run docker compose:
 ```shell
 make docker_build
+```
+
+**7.** Load environment variables into the project directory:
+```shell
+source .env
 ```
 
 **8.** Create GCP Storage bucket using Terraform:
@@ -192,7 +192,7 @@ Enter "yes" when prompted for a value to the following "Do you want to perform t
 cd ../
 ```
 
-9 Launch Airflow UI. username - `airflow`. password - `airflow`. Note - it make take a 15-20 seconds to launch the home page:
+9 Launch Airflow UI. username - `airflow`. password - `airflow`:
 ```shell
 http://localhost:8080
 ```
