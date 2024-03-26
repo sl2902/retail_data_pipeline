@@ -161,118 +161,129 @@ make setup
 source .env
 ```
 
-**7.** Create GCP Storage bucket using Terraform:
-```shell
-cd terraform
-```
-
-7.1 Initialize terraform:
-```shell
-terraform init
-```
-
-7.2 Plan terraform:
-```shell
-terraform plan
-```
-
-7.3 Apply terraform:
-```shell
-terraform apply
-```
-
-7.4 Return to project root folder:
-```shell
-cd ../
-```
-
-**8.** Start Docker desktop. Run docker compose:
+**7.** Start Docker desktop. Run docker compose:
 ```shell
 make docker_build
 ```
 
-8.1 Launch Airflow UI. username - `airflow`. password - `airflow`. Note - it make take a few seconds to launch the page:
+**8.** Create GCP Storage bucket using Terraform:
+```shell
+cd terraform
+```
+
+8.1 Initialize terraform:
+```shell
+terraform init
+```
+
+8.2 Plan terraform:
+```shell
+terraform plan
+```
+
+8.3 Apply terraform:
+```shell
+terraform apply
+```
+Enter "yes" when prompted for a value to the following "Do you want to perform these actions?"
+
+8.4 Return to project root folder:
+```shell
+cd ../
+```
+
+9 Launch Airflow UI. username - `airflow`. password - `airflow`. Note - it make take a 15-20 seconds to launch the home page:
 ```shell
 http://localhost:8080
 ```
 
-8.2 Run sanity check to see whether the dags are available; there should be 5 dags, which are paused:
+9.1 Run sanity check to see whether the dags are available; there should be 5 dags, which are paused:
 ```shell
 make dag_list
 ```
 Note - if you haven't provided the `SERVICE_ACCOUNT_FILENAME` and `project_id`, it will fail to add the connection
 
-8.3 Create service account in Airflow connections:
+9.2 Create service account in Airflow connections:
 ```shell
 make add_gcp_service_account_airflow
 ```
 
-8.4 Load the configuration files:
+9.3 Load the configuration files:
 ```shell
 make dag_run_upload_config_files_to_gcs
 ```
 
-8.4.1 Check the status of job either on the CLI or via the Airflow UI:
+9.3.1 Check the status of job either on the CLI or via the Airflow UI:
 ```shell
 make dag_chk_status_upload_config_files_to_gcs
 ```
 
-8.5 Generate and load dimensional data to BQ:
+9.4 Generate and load dimensional data to BQ:
 ```shell
 make dag_run_load_mock_dim_data_bq
 ```
 
-8.5.1 Check the status of job either on the CLI or via the Airflow UI:
+9.4.1 Check the status of job either on the CLI or via the Airflow UI:
 ```shell
 make dag_chk_status_load_mock_dim_data_bq
 ```
 
-8.6 Setup the pub/sub lite infra
+9.5 Setup the pub/sub lite infra
 ```shell
 make dag_run_setup_pubsublite_infra
 ```
 
-8.6.1 Check the status of job either on the CLI or via the Airflow UI:
+9.5.1 Check the status of job either on the CLI or via the Airflow UI:
 ```shell
 make dag_chk_status_setup_pubsublite_infra
 ```
 
-8.7 Generate transaction and inventory history for 3 months and stream the data
+9.6 Generate transaction and inventory history for 3 months and stream the data
 ```shell
 make dag_run_publish_stream_to_bq
 ```
 
-8.7.1 Check the status of job either on the CLI or via the Airflow UI:
+9.6.1 Check the status of job either on the CLI or via the Airflow UI:
 ```shell
 make dag_chk_status_publish_stream_to_bq
 ```
 
-8.8 Transform the data using dbt
+9.7 Transform the data using dbt
 ```shell
 make dag_run_build_dbt_model
 ```
 
-8.8.1 Check the status of job either on the CLI or via the Airflow UI:
+9.7.1 Check the status of job either on the CLI or via the Airflow UI:
 ```shell
 make dag_chk_status_build_dbt_model
 ```
 
-8.9 Run the streamlit dashboard
+9.8 Run the streamlit dashboard
 ```shell
 make run_streamlit
 ```
 
-8.10 Simulate generating transactions and inventories in real-time and stream the data
+9.9 Simulate generating transactions and inventories in real-time and stream the data
 ```shell
 make dag_run_publish_stream_to_bq_sec
 ```
 
-8.10.1 Check the status of job either on the CLI or via the Airflow UI:
+9.9.1 Check the status of job either on the CLI or via the Airflow UI:
 ```shell
 make dag_chk_status_publish_stream_to_bq_sec
 ```
 
-8.11 Clean the environment
+9.10 Rerun the dbt job
+```shell
+make dag_run_build_dbt_model
+```
+
+9.11 Check the updated streamlit dashboard
+```shell
+make run_streamlit
+```
+
+9.12 Clean the environment
 ```shell
 make docker_clean
 ```
