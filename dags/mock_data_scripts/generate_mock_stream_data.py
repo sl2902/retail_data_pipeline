@@ -227,7 +227,7 @@ if __name__ == "__main__":
     parser.add_argument('--duration',
                help="Enter duration in seconds. This is the amount of time data will be generated for",
                type=int,
-               default=2
+               default=5
     )
     args = parser.parse_args()
     main(args.units, int(args.duration))
