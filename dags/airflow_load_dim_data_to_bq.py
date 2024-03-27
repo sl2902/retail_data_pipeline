@@ -34,6 +34,9 @@ from airflow.operators.python import (
 from airflow.operators.dummy import (
     DummyOperator
 )
+from airflow.operators.trigger_dagrun import (
+    TriggerDagRunOperator
+)
 from google.api_core.exceptions import NotFound
 from google.cloud import bigquery, storage
 from mock_data_scripts.generate_mock_dim_data import run_pipeline
@@ -205,9 +208,22 @@ load_store_data_bq = GCSToBigQueryOperator(
     dag=dag,
 )
 
+all_success = DummyOperator(
+    task_id="all_success",
+    dag=dag,
+    trigger_rule=TriggerRule.ALL_SUCCESS
+)
+
+trigger_publish_stream_to_bq = TriggerDagRunOperator(
+    task_id="trigger_publish_stream_to_bq",
+    trigger_dag_id="publish_stream_to_bq",
+    dag=dag
+)
+
 
 
 # check_bucket_task >> [create_bucket, bucket_exists]
 # [create_bucket, bucket_exists] >> one_success 
 create_bucket >> generate_mock_data
-generate_mock_data >> create_dataset >> [load_product_data_bq, load_store_data_bq]
+generate_mock_data >> create_dataset >> [load_product_data_bq, load_store_data_bq] 
+[load_product_data_bq, load_store_data_bq] >> all_success >> trigger_publish_stream_to_bq

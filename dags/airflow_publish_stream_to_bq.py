@@ -38,6 +38,9 @@ from airflow.operators.python import (
 from airflow.operators.dummy import (
     DummyOperator
 )
+from airflow.operators.trigger_dagrun import (
+    TriggerDagRunOperator
+)
 from google.api_core.exceptions import NotFound
 from google.cloud import bigquery, storage
 from google.cloud.storage import Client, transfer_manager
@@ -307,7 +310,13 @@ all_success = DummyOperator(
         task_id='all_task_success',
         dag=dag,
         trigger_rule=TriggerRule.ALL_SUCCESS,
-    )
+)
+
+trigger_build_dbt_model = TriggerDagRunOperator(
+    task_id="trigger_build_dbt_model",
+    trigger_dag_id="build_dbt_model",
+    dag=dag
+)
 
 delete_cluster = DataprocDeleteClusterOperator(
     task_id="delete_cluster",
@@ -319,5 +328,5 @@ delete_cluster = DataprocDeleteClusterOperator(
 
 generate_stream_data >> load_cluster_config >> check_cluster_task >> [cluster_running, create_cluster]
 [cluster_running, create_cluster] >> one_success >> [consumer_job, producer_job]
-[consumer_job, producer_job] >> all_success >> delete_cluster
+[consumer_job, producer_job] >> all_success >> trigger_build_dbt_model >> delete_cluster
 

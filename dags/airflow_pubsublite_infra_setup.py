@@ -45,6 +45,9 @@ from google.cloud.pubsublite.types import (
     SubscriptionPath,
     TopicPath,
 )
+from airflow.operators.trigger_dagrun import (
+    TriggerDagRunOperator
+)
 from google.protobuf.duration_pb2 import Duration
 from config_data.pubsublite_config import *
 
@@ -304,6 +307,19 @@ create_inv_subscription = GCSCreatePubSubLiteSubscription(
     dag=dag
 )
 
+all_success = DummyOperator(
+    task_id="all_success",
+    dag=dag,
+    trigger_rule=TriggerRule.ALL_SUCCESS
+)
+
+trigger_publish_stream_to_bq = TriggerDagRunOperator(
+    task_id="trigger_publish_stream_to_bq",
+    trigger_dag_id="publish_stream_to_bq",
+    dag=dag
+)
+
 create_reservation >> [create_txn_topic, create_inv_topic] 
 create_txn_topic >> create_txn_subscription
 create_inv_topic >> create_inv_subscription
+[create_txn_subscription, create_inv_subscription] >> all_success >> trigger_publish_stream_to_bq
