@@ -231,6 +231,13 @@ make dag_chk_status_run_retail_data_pipeline
 **10.** The instructions below can be followed if you would like to run the dags one by one:
 
 <details>
+<summary>Steps to run dags one by one</summary>
+
+Note - If the environment is in an intermediate state, it is advised to clear up the intermediate objects before
+runing the steps below. Otherwise, you may experience unexpected results. To start afresh, follow the steps shown
+at the bottom of the page to destroy Terraform resources and then clean the Docker environment. 
+When starting afresh, make sure the service usage Cloud API has been enabled. Rebuild the Docker environment and 
+apply the Terraform resources.
 
 10.1 Load the configuration files:
 ```shell
@@ -313,7 +320,7 @@ client_x509_cert_url = "https://www.googleapis.com/robot/v1/metadata/x509/SERVIC
 make dag_run_publish_stream_to_bq_sec
 ```
 
-12.1.1 Check the status of job either on the CLI or via the Airflow UI by clicking on the respective dag:
+12.1 Check the status of job either on the CLI or via the Airflow UI by clicking on the respective dag:
 ```shell
 make dag_chk_status_publish_stream_to_bq_sec
 ```
