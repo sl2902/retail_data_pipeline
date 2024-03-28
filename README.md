@@ -229,70 +229,7 @@ make dag_run_retail_data_pipeline
 make dag_chk_status_run_retail_data_pipeline
 ```
 
-**10.** The instructions below can be followed if you would like to run the dags one by one:
-
-<details>
-<summary>Steps to run dags one by one</summary>
-
-Note - If the environment is in an intermediate state, it is advised to clear up the intermediate objects before
-runing the steps below. Otherwise, you may experience unexpected results. To start afresh, follow the steps shown
-at the bottom of the page to destroy Terraform resources and then clean the Docker environment. 
-When starting afresh, make sure the service usage Cloud API has been enabled. Rebuild the Docker environment and 
-apply the Terraform resources.
-
-10.1 Load the configuration files:
-```shell
-make dag_run_upload_config_files_to_gcs
-```
-
-10.1.1 Check the status of job either on the CLI or via the Airflow UI by clicking on the respective dag:
-```shell
-make dag_chk_status_upload_config_files_to_gcs
-```
-
-10.2 Generate and load dimensional data to BQ:
-```shell
-make dag_run_load_mock_dim_data_bq
-```
-
-10.2.1 Check the status of job either on the CLI or via the Airflow UI by clicking on the respective dag:
-```shell
-make dag_chk_status_load_mock_dim_data_bq
-```
-
-10.3 Setup the pub/sub lite infra
-```shell
-make dag_run_setup_pubsublite_infra
-```
-
-10.3.1 Check the status of job either on the CLI or via the Airflow UI by clicking on the respective dag:
-```shell
-make dag_chk_status_setup_pubsublite_infra
-```
-
-10.4 Generate transaction and inventory history for 3 months and stream the data:
-```shell
-make dag_run_publish_stream_to_bq
-```
-
-10.4.1 Check the status of job either on the CLI or via the Airflow UI by clicking on the respective dag:
-```shell
-make dag_chk_status_publish_stream_to_bq
-```
-
-10.5 Transform the data using dbt:
-```shell
-make dag_run_build_dbt_model
-```
-
-10.5.1 Check the status of job either on the CLI or via the Airflow UI by clicking on the respective dag:
-```shell
-make dag_chk_status_build_dbt_model
-```
-
-</details>
-
-**11.** Run the streamlit dashboard:
+**10.** Run the streamlit dashboard:
 ```shell
 make run_streamlit
 ```
@@ -316,32 +253,32 @@ auth_provider_x509_cert_url = "https://www.googleapis.com/oauth2/v1/certs"
 client_x509_cert_url = "https://www.googleapis.com/robot/v1/metadata/x509/SERVICE_ACCOUNT_EMAIL"
 ```
 
-**12.** Simulate generating transactions and inventories in real-time and stream the data for 5 seconds:
+**11.** Simulate generating transactions and inventories in real-time and stream the data for 5 seconds:
 ```shell
 make dag_run_publish_stream_to_bq_sec
 ```
 
-12.1 Check the status of job either on the CLI or via the Airflow UI by clicking on the respective dag:
+11.1 Check the status of job either on the CLI or via the Airflow UI by clicking on the respective dag:
 ```shell
 make dag_chk_status_publish_stream_to_bq_sec
 ```
 
-12.2 Check the updated streamlit dashboard
+11.2 Check the updated streamlit dashboard
 ```shell
 make run_streamlit
 ```
 
-12.3 Clean the environment
+11.3 Clean the environment
 ```shell
 make docker_clean
 ```
 
-**13.** Destroy terraform resources:
+**12.** Destroy terraform resources:
 ```shell
 cd terraform && terraform destroy && cd ../
 ```
 
-13.1 Remove the remaining dependent APIs either via the console or after installing gcloud sdk and initializing the project:
+12.1 Remove the remaining dependent APIs either via the console or after installing gcloud sdk and initializing the project:
 ```shell
   gcloud services list --format="value(config.name)" \
 | xargs -I{} gcloud services disable --force {}
