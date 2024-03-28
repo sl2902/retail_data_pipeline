@@ -214,11 +214,11 @@ all_success = DummyOperator(
     trigger_rule=TriggerRule.ALL_SUCCESS
 )
 
-# trigger_publish_stream_to_bq = TriggerDagRunOperator(
-#     task_id="trigger_publish_stream_to_bq",
-#     trigger_dag_id="publish_stream_to_bq",
-#     dag=dag
-# )
+trigger_publish_stream_to_bq = TriggerDagRunOperator(
+    task_id="trigger_publish_stream_to_bq",
+    trigger_dag_id="publish_stream_to_bq",
+    dag=dag
+)
 
 
 
@@ -226,4 +226,4 @@ all_success = DummyOperator(
 # [create_bucket, bucket_exists] >> one_success 
 create_bucket >> generate_mock_data
 generate_mock_data >> create_dataset >> [load_product_data_bq, load_store_data_bq] 
-[load_product_data_bq, load_store_data_bq] >> all_success
+[load_product_data_bq, load_store_data_bq] >> all_success >> trigger_publish_stream_to_bq
