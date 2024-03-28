@@ -96,10 +96,10 @@ Note - If you have already done these steps then it is not required.
 - Sign up for a free account [here](https://cloud.google.com/free/), and enable billing.
 - Create your project
 - Create a service account under IAM & Admin
-- Grant the following roles - Owner + Storage Admin + Storage Object Admin + Service Usage Admin
+- Grant the following roles - `Owner` + `Storage Admin` + `Storage Object Admin` + `Service Usage Admin`
+- Once done, under `Actions` against your Service Account, click on `Manage keys`. Click `Add key`, and then `Create new key`. Download the JSON file and store it in a suitable location locally
 - Enable the following apis - 
     `serviceusage` [here](https://console.developers.google.com/apis/api/serviceusage.googleapis.com/)
-- Click Add keys, and then crete new key. Download the JSON file and store it in a suitable location locally
 
 </details>
 
