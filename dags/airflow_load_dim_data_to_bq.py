@@ -7,7 +7,7 @@ from airflow.models import BaseOperator
 from airflow.operators.python_operator import PythonOperator
 from airflow.utils.decorators import apply_defaults
 from airflow.models import Variable
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from airflow.utils.trigger_rule import TriggerRule
 from airflow.operators.bash_operator import (
     BashOperator
@@ -151,7 +151,7 @@ dag = DAG(
     default_args=default_args,
     description="Task creates bucket and load mock dimensional data into BQ",
     schedule_interval="@daily",
-    start_date=datetime.now().replace(hour=0, minute=0, second=0, microsecond=0),
+    start_date=datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0),
     tags=["dev"]
 )
 
@@ -214,11 +214,11 @@ all_success = DummyOperator(
     trigger_rule=TriggerRule.ALL_SUCCESS
 )
 
-trigger_publish_stream_to_bq = TriggerDagRunOperator(
-    task_id="trigger_publish_stream_to_bq",
-    trigger_dag_id="publish_stream_to_bq",
-    dag=dag
-)
+# trigger_publish_stream_to_bq = TriggerDagRunOperator(
+#     task_id="trigger_publish_stream_to_bq",
+#     trigger_dag_id="publish_stream_to_bq",
+#     dag=dag
+# )
 
 
 
@@ -226,4 +226,4 @@ trigger_publish_stream_to_bq = TriggerDagRunOperator(
 # [create_bucket, bucket_exists] >> one_success 
 create_bucket >> generate_mock_data
 generate_mock_data >> create_dataset >> [load_product_data_bq, load_store_data_bq] 
-[load_product_data_bq, load_store_data_bq] >> all_success >> trigger_publish_stream_to_bq
+[load_product_data_bq, load_store_data_bq] >> all_success

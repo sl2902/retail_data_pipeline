@@ -8,7 +8,7 @@ from airflow.models import BaseOperator
 from airflow.utils.trigger_rule import TriggerRule
 from airflow.utils.decorators import apply_defaults
 from airflow.models import Variable
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from airflow.operators.python_operator import (
     PythonOperator
 )
@@ -90,7 +90,7 @@ dag = DAG(
     default_args=default_args,
     description="Task uploads config files required by the pipeline",
     schedule_interval="@daily",
-    start_date=datetime.now().replace(hour=0, minute=0, second=0, microsecond=0),
+    start_date=datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0),
     render_template_as_native_obj=True,
     tags=["dev"]
 )

@@ -6,7 +6,7 @@ from airflow.models import BaseOperator
 from airflow.operators.python_operator import PythonOperator
 from airflow.utils.decorators import apply_defaults
 from airflow.models import Variable
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from airflow.utils.trigger_rule import TriggerRule
 from airflow.operators.bash_operator import (
     BashOperator
@@ -30,7 +30,7 @@ dag = DAG(
     default_args=default_args,
     description="Create dbt models in BQ",
     schedule_interval="@daily",
-    start_date=datetime.now().replace(hour=0, minute=0, second=0, microsecond=0),
+    start_date=datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0),
     tags=["dev"]
 )
 

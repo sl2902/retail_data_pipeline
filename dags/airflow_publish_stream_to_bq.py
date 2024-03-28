@@ -10,7 +10,7 @@ from airflow.models import BaseOperator
 from airflow.utils.trigger_rule import TriggerRule
 from airflow.utils.decorators import apply_defaults
 from airflow.models import Variable
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from airflow.operators.bash_operator import (
     BashOperator
 )
@@ -158,7 +158,7 @@ dag = DAG(
     default_args=default_args,
     description="Task generates streaming data for producer and consumer",
     schedule_interval="@daily",
-    start_date=datetime.now().replace(hour=0, minute=0, second=0, microsecond=0),
+    start_date=datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0),
     render_template_as_native_obj=True,
     tags=["dev"]
 )
@@ -204,8 +204,8 @@ run_date = "{{ dag_run.conf['execution_date'] if dag_run and dag_run.conf and 'e
 #     exclude="__"
 # )
 
-units = "{{ dag_run.conf['units'] if dag_run and dag_run.conf and 'units' in dag_run.conf else 'seconds' }}"
-duration = "{{ dag_run.conf['duration'] if dag_run and dag_run.conf and 'duration' in dag_run.conf else 5 }}"
+units = "{{ dag_run.conf['units'] if dag_run and dag_run.conf and 'units' in dag_run.conf else 'minutes' }}"
+duration = "{{ dag_run.conf['duration'] if dag_run and dag_run.conf and 'duration' in dag_run.conf else 30 }}"
 generate_stream_data = PythonOperator(
     task_id="generate_stream_data",
     python_callable=run_pipeline,
