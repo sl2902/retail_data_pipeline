@@ -313,13 +313,13 @@ all_success = DummyOperator(
     trigger_rule=TriggerRule.ALL_SUCCESS
 )
 
-trigger_publish_stream_to_bq = TriggerDagRunOperator(
-    task_id="trigger_publish_stream_to_bq",
-    trigger_dag_id="publish_stream_to_bq",
-    dag=dag
-)
+# trigger_publish_stream_to_bq = TriggerDagRunOperator(
+#     task_id="trigger_publish_stream_to_bq",
+#     trigger_dag_id="publish_stream_to_bq",
+#     dag=dag
+# )
 
 create_reservation >> [create_txn_topic, create_inv_topic] 
 create_txn_topic >> create_txn_subscription
 create_inv_topic >> create_inv_subscription
-[create_txn_subscription, create_inv_subscription] >> all_success >> trigger_publish_stream_to_bq
+[create_txn_subscription, create_inv_subscription] >> all_success
