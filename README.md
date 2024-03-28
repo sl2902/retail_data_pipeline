@@ -169,7 +169,7 @@ make docker_build
 source .env
 ```
 
-**8.** Create GCP Storage bucket using Terraform:
+**8.** Create GCP Storage bucket and enable required Cloud APIs using Terraform:
 ```shell
 cd terraform
 ```
