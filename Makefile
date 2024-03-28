@@ -90,7 +90,7 @@ dag_run_build_dbt_model: ## Run dbt model
 dag_chk_status_build_dbt_model: ## Check status of dag - Run dbt model
 	@docker compose run airflow-cli airflow dags list-runs -d build_dbt_model | head -3
 
-dag_run_publish_stream_to_bq_sec: ## Start producer and consumer and publish stream to BQ
+dag_run_publish_stream_to_bq_sec: ## Start producer and consumer and publish stream to BQ; this job runs for 5 seconds
 	@docker compose run airflow-cli airflow dags unpause publish_stream_to_bq
 	@docker compose run airflow-cli airflow dags trigger publish_stream_to_bq --conf '{"units": "seconds", "duration": 5}'
 	@docker compose run airflow-cli airflow dags list-runs -d publish_stream_to_bq --state running
