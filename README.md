@@ -219,7 +219,7 @@ make dag_unpause_all_dags
 Note: Sometimes it takes a while to unpause the DAGs. Run the `make dag_list` command to check whether the `paused` field is set to `False`.
 You can also manually unpause the dags from the Airflow UI home page; it is located to the left of the dag name.
 
-9.4 Run the retail data ![pipeline](assets/airflow/dag_dependencies.png) dag:
+9.4 Run the retail data [pipeline](assets/airflow/dag_dependencies.png) dag:
 ```shell
 make dag_run_retail_data_pipeline
 ```
