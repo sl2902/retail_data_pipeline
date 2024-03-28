@@ -145,10 +145,11 @@ cd retail_data_pipeline/
 mv env.template .env
 ```
 
-4.1 Fill in the blanks to the following environment variables in the `.env` file and save it:
+4.1 Fill in the blanks to the following environment variables in the `.env` file and save them:
 ```shell
 project_id=
 bucket_name=
+dataset=
 SERVICE_ACCOUNT_FILENAME=
 HOST_GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/${SERVICE_ACCOUNT_FILENAME}
 ```
@@ -218,7 +219,7 @@ make dag_unpause_all_dags
 Note: Sometimes it takes a while to unpause the DAGs. Run the `make dag_list` command to check whether the `paused` field is set to `False`.
 You can also manually unpause the dags from the Airflow UI home page; it is located to the left of the dag name.
 
-9.4 Run the retail data pipeline dag:
+9.4 Run the retail data ![pipeline](assets/airflow/dag_dependencies.png) dag:
 ```shell
 make dag_run_retail_data_pipeline
 ```
