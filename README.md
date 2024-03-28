@@ -326,17 +326,12 @@ make dag_run_publish_stream_to_bq_sec
 make dag_chk_status_publish_stream_to_bq_sec
 ```
 
-12.2 Rerun the dbt job:
-```shell
-make dag_run_build_dbt_model
-```
-
-12.3 Check the updated streamlit dashboard
+12.2 Check the updated streamlit dashboard
 ```shell
 make run_streamlit
 ```
 
-12.4 Clean the environment
+12.3 Clean the environment
 ```shell
 make docker_clean
 ```
