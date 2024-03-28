@@ -32,7 +32,7 @@ add_gcp_service_account_airflow: ## Add GCP service account to Airflow connectio
 		--conn-description="Google service account credentials" \
     	--conn-extra='{"extra__google_cloud_platform__key_path": "$(GOOGLE_APPLICATION_CREDENTIALS)", "extra__google_cloud_platform__project": "$(project_id)", "extra__google_cloud_platform__scope": "https://www.googleapis.com/auth/cloud-platform"}'
 
-dag_unpause_all_dags: ## Unpause the dags
+unpause_all_dags: ## Unpause the dags
 	@docker compose run airflow-cli airflow dags unpause upload_config_files_to_gcs
 	@docker compose run airflow-cli airflow dags unpause load_mock_dim_data_bq
 	@docker compose run airflow-cli airflow dags unpause setup_pubsublite_infra
