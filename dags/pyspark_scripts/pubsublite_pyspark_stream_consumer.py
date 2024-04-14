@@ -72,6 +72,7 @@ txn_df = (
             .withColumn("quantity", col("attributes.quantity").getItem(0).cast(StringType()).cast(IntegerType()))
             .withColumn("unit_price", col("attributes.unit_price").getItem(0).cast(StringType()).cast(IntegerType()))
             .withColumn("store_id", col("attributes.store_id").getItem(0).cast(StringType()))
+            .withColumn("date", date_trunc("DAY", "timestamp"))
             .select("transaction_id", "product_id", "timestamp", "quantity", "unit_price", "store_id")
             .filter(col("transaction_id").isNotNull())
 )
@@ -85,6 +86,7 @@ inv_df = (
             .withColumn("timestamp", col("attributes.event_timestamp").getItem(0).cast(StringType()).cast(TimestampType()))
             .withColumn("quantity_change", col("attributes.quantity_change").getItem(0).cast(StringType()).cast(IntegerType()))
             .withColumn("store_id", col("attributes.store_id").getItem(0).cast(StringType()))
+            .withColumn("date", date_trunc("DAY", "timestamp"))
             .select("inventory_id", "product_id", "timestamp", "quantity_change", "store_id")
             .filter(col("inventory_id").isNotNull())
 )
@@ -92,24 +94,42 @@ inv_df = (
 inv_df = inv_df.withWatermark("timestamp", "1 seconds").dropDuplicates(["inventory_id", "timestamp"])
 
 
-def write_bigquery(df, batch_id, temp_bucket, table_name):
+def write_bigquery(df, batch_id, temp_bucket, table_name, add_fields):
     df.write.format("bigquery")\
-            .option("temporaryGcsBucket", temp_bucket)\
-            .option("table", f"{bq_dataset}.{table_name}")\
-            .mode("append")\
+            .option("temporaryGcsBucket", temp_bucket) \
+            .option("table", f"{bq_dataset}.{table_name}") \
+            .option("partitionField", add_fields.get("part_field")) \
+            .option("partitionType", "DAY") \
+            .option("clusteringFields", add_fields.get("clust_field")) \
+            .mode("append") \
             .save()
     
 def append_stream_bq(df, func):
-    query = df.writeStream\
-            .outputMode("append")\
-            .foreachBatch(func)\
+    query = df.writeStream \
+            .outputMode("append") \
+            .foreachBatch(func) \
             .start()
     return query
 
-write_inv_bq_with_params = lambda df, batch_id: write_bigquery(df, batch_id, inv_temp_bucket, inv_table_name)
+
+add_fields = {"part_field": "timestamp", "clust_field": ["product_id"]}
+
+write_inv_bq_with_params = lambda df, batch_id: write_bigquery(
+    df, 
+    batch_id, 
+    inv_temp_bucket, 
+    inv_table_name, 
+    add_fields
+)
 append_stream_bq(inv_df, write_inv_bq_with_params)
 
-write_txn_bq_with_params = lambda df, batch_id: write_bigquery(df, batch_id, txn_temp_bucket, txn_table_name)
+write_txn_bq_with_params = lambda df, batch_id: write_bigquery(
+    df, 
+    batch_id, 
+    txn_temp_bucket, 
+    txn_table_name, 
+    add_fields
+)
 query = append_stream_bq(txn_df, write_txn_bq_with_params)
 
 query.awaitTermination(500)
